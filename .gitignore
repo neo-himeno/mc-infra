@@ -1,0 +1,15 @@
+# .gitignore
+# サーバーの実行データ（重いので除外）
+**/world/
+**/world_nether/
+**/world_the_end/
+**/logs/
+**/plugins/*.jar
+**/cache/
+**/libraries/
+**/versions/
+
+# 秘密情報
+**/*.secret
+**/*.key
+playit/playit.toml
