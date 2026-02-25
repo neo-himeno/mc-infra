@@ -15,7 +15,7 @@ services:
       EULA: "TRUE"
       MEMORY: 2G
       ONLINE_MODE: "false"
-      VELOCITY_SECRET: "58380ae76933706d5cd72d67f6d5d6aa66522ae49e786d6457a5447c58b046b1"
+      VELOCITY_SECRET: ${VELOCITY_SECRET}
     volumes:
       - ./server-1:/data
     networks:
@@ -30,7 +30,7 @@ services:
       EULA: "TRUE"
       MEMORY: 2G
       ONLINE_MODE: "false"
-      VELOCITY_SECRET: "58380ae76933706d5cd72d67f6d5d6aa66522ae49e786d6457a5447c58b046b1"
+      VELOCITY_SECRET: ${VELOCITY_SECRET}
     volumes:
       - ./server-2:/data
     networks:
