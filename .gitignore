@@ -1,15 +1,16 @@
 # .gitignore
-# サーバーの実行データ（重いので除外）
-**/world/
-**/world_nether/
-**/world_the_end/
-**/logs/
-**/plugins/*.jar
-**/cache/
-**/libraries/
-**/versions/
+
+# 環境設定
+.env
+.env.local
+.env.*.local
+
+# サーバーデータディレクトリ（自動生成）
+server-1/
+server-2/
+playit/
 
 # 秘密情報
 **/*.secret
 **/*.key
-playit/playit.toml
+velocity/forwarding.secret

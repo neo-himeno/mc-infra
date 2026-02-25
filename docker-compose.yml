@@ -1,0 +1,55 @@
+services:
+
+  playit:
+    image: ghcr.io/playit-cloud/playit-agent:0.17
+    network_mode: host
+    environment:
+      - SECRET_KEY=${PLAYIT_SECRET_KEY}
+
+  # Velocity プロキシサーバー
+  velocity:
+    image: itzg/minecraft-server
+    container_name: mc-velocity
+    environment:
+      TYPE: VELOCITY
+      MEMORY: 512M
+      ENFORCE_SECURE_PROFILE: "false"
+    volumes:
+      - ./velocity:/config
+    networks:
+      - mc-network
+    depends_on:
+      - server-1
+      - server-2
+
+  # マインクラフトサーバー 1
+  server-1:
+    image: itzg/minecraft-server
+    container_name: mc-server-1
+    environment:
+      TYPE: PAPER
+      EULA: "TRUE"
+      MEMORY: 2G
+      ONLINE_MODE: "false" # Velocity経由のためfalse設定
+    volumes:
+      - ./server-1:/data
+    networks:
+      - mc-network
+
+  # マインクラフトサーバー 2
+  server-2:
+    image: itzg/minecraft-server
+    container_name: mc-server-2
+    environment:
+      TYPE: PAPER
+      EULA: "TRUE"
+      MEMORY: 2G
+      ONLINE_MODE: "false"
+    volumes:
+      - ./server-2:/data
+    networks:
+      - mc-network
+
+networks:
+  mc-network:
+    driver: bridge

@@ -56,31 +56,46 @@ graph TD
 ```
 
 ## 🚀 セットアップ手順
-1. **リポジトリの準備**
+
+### 1. リポジトリの準備
 
 ```bash
 git clone https://github.com/neo-himeno/mc-infra.git
 cd mc-infra
 ```
 
-2. **コンテナの起動**
+### 2. 環境変数の設定
+
+`.env.example` から `.env` を作成し、playit.gg のシークレットキーを設定します。
+
+```bash
+cp .env.example .env
+# .env を編集して PLAYIT_SECRET_KEY を入力
+```
+
+**PLAYIT_SECRET_KEY の取得方法：**
+1. https://playit.gg/login/create でアカウント作成
+2. ダッシュボードでシークレットキー（API Key）を生成
+3. `.env` の `PLAYIT_SECRET_KEY` 値を置き換え
+
+### 3. コンテナの起動
 
 ```bash
 docker compose up -d
 ```
 
-3. **playit.gg のアクティベート**
-
-起動後、エージェントのログを確認し、表示されたURLからトンネルの認証を行います。
+### 4. playit.gg のトンネル確立を確認
 
 ```bash
 docker compose logs -f playit
 ```
 
-4. **Velocity の設定**
+ログに `[INFO]` で接続完了が表示されたら、 **Ctrl+C** で終了します。
 
-`velocity/velocity.toml` を編集し、各サーバーのホスト名（サブドメイン）と転送先を定義します。  
-その後、コンテナを再起動して設定を反映させます。
+### 5. Velocity の設定
+
+`velocity/velocity.toml` を編集し、各サーバーへのルーティング設定（ホスト名と転送先）を定義します。  
+設定後、コンテナを再起動して反映させます。
 
 ```bash
 docker compose restart velocity
@@ -88,6 +103,12 @@ docker compose restart velocity
 
 ## 🔐 運用上の注意
 
-- **Security**: `forwarding.secret` や `playit.toml` は機密情報を含むため、公開リポジトリへのコミットを避けてください。
-- **Persistence**: `world` フォルダ等は `.gitignore` により管理外となっています。別途バックアップ戦略が必要です。
-- **Memory**: 各コンテナのメモリ割り当て（環境変数 `MEMORY`）は、ホストマシンのリソースに応じて調整してください。
+### 秘密情報の管理
+- **`.env` ファイル**: `PLAYIT_SECRET_KEY` を含む環境ファイル。`.gitignore` により Git管理外です。**絶対にコミットしないでください**。
+- **`playit/` ディレクトリ**: playit.gg のトークン・設定を含む。自動生成されるため、リポジトリには含まれません。
+- **`velocity/forwarding.secret`**: Velocity内部通信用の秘密鍵。`.gitignore` により保護されています。
+
+### その他の注意事項
+- **Persistence**: `world`, `logs`, `cache` などのゲームデータは `.gitignore` 対象です。永続データ用にボリュームマウントまたはバックアップ戦略が推奨されます。
+- **Memory 設定**: コンテナメモリ割り当て（`docker-compose.yml` の `MEMORY` 環境変数）は、ホストマシンのリソースに応じて調整してください。
+- **新規環境での再構築**: リポジトリをクローンして `docker compose up -d` を実行すれば、自動的にディレクトリが生成されて起動します。`.env` だけ忘れずに作成してください。
