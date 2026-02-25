@@ -6,22 +6,6 @@ services:
     environment:
       - SECRET_KEY=${PLAYIT_SECRET_KEY}
 
-  # Velocity プロキシサーバー
-  velocity:
-    image: itzg/minecraft-server
-    container_name: mc-velocity
-    environment:
-      TYPE: VELOCITY
-      MEMORY: 512M
-      ENFORCE_SECURE_PROFILE: "false"
-    volumes:
-      - ./velocity:/config
-    networks:
-      - mc-network
-    depends_on:
-      - server-1
-      - server-2
-
   # マインクラフトサーバー 1
   server-1:
     image: itzg/minecraft-server
@@ -30,7 +14,8 @@ services:
       TYPE: PAPER
       EULA: "TRUE"
       MEMORY: 2G
-      ONLINE_MODE: "false" # Velocity経由のためfalse設定
+      ONLINE_MODE: "false"
+      VELOCITY_SECRET: "58380ae76933706d5cd72d67f6d5d6aa66522ae49e786d6457a5447c58b046b1"
     volumes:
       - ./server-1:/data
     networks:
@@ -45,6 +30,7 @@ services:
       EULA: "TRUE"
       MEMORY: 2G
       ONLINE_MODE: "false"
+      VELOCITY_SECRET: "58380ae76933706d5cd72d67f6d5d6aa66522ae49e786d6457a5447c58b046b1"
     volumes:
       - ./server-2:/data
     networks:

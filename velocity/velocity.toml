@@ -1,0 +1,64 @@
+# Velocity Proxy Configuration File
+config-version = "2.6"
+
+# The hostname that the proxy should listen on.
+bind = "0.0.0.0:25565"
+
+# The MOTD that is displayed in the server list of the client, and in query protocol responses.
+motd = "&cMinecraft Velocity Server"
+
+# Whether to only show in ping the maximum number of online players.
+show-max-online = false
+
+# The maximum number of players that may be connected to the proxy at once.
+max-online = 500
+
+# Whether Velocity should authenticate players with Mojang. By default, this is true.
+online-mode = false
+
+# If you are using a compatibility layer, such as BungeeGuard, you may need to enable this.
+# If you're not sure what this does, then don't touch it!
+always-split-passwords = false
+
+# Specify a custom timeout for connection requests.
+connection-timeout = 5000
+read-timeout = 30000
+
+# This determines how often we get server ping responses back. Responses are cached.
+server-connect-timeout = 5000
+
+# Configure your servers here. Each key represents the server's name, and the value
+# represents the server's address.
+[servers]
+login = "mc-server-1:25565"
+lobby = "mc-server-1:25565"
+server-1 = "mc-server-1:25565"
+server-2 = "mc-server-2:25565"
+
+# In what order we should try servers when a player logs in without an explicit
+# server to connect to? This falls back to the first server in the list.
+try = ["login", "lobby"]
+
+# Configure the proxying behavior for Velocity.
+[forwarding]
+# If you are using Minecraft 1.13 or higher on your backend server, configure this to "modern" (the default).
+# If you are using Minecraft 1.12.2 or lower to your backend server, configure this to "legacy" (older format).
+# If you are using 1.12.2 with the Floodgate token, use the "legacy" setting.
+# Consult the Velocity wiki for more information regarding server player info forwarding.
+mode = "modern"
+# If using modern forwarding, optionally set the secret for the proxy. Verification is disabled by default.
+secret = "58380ae76933706d5cd72d67f6d5d6aa66522ae49e786d6457a5447c58b046b1"
+
+# Advanced
+[advanced]
+log-command-executions = false
+player-info-forwarding-mode = "modern"
+announce-proxy-commands = false
+kick-existing-players = false
+bungee-plugin-message-channel = true
+compression-threshold = 256
+compression-level = -1
+login-ratelimit = 3000
+gamepack-limit = 6291456
+failover-on-unexpected-server-disconnect = true
+announce-forge = false

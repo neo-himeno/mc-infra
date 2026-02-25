@@ -1,0 +1,12 @@
+FROM openjdk:17-slim
+
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /config
+
+# Download Velocity
+RUN curl -L https://api.papermc.io/v2/projects/velocity/versions/latest/builds/latest/downloads/velocity-latest.jar -o velocity.jar
+
+EXPOSE 25565
+
+ENTRYPOINT ["java", "-Xms256M", "-Xmx512M", "-XX:+UseG1GC", "-XX:G1HeapRegionSize=4M", "-XX:+UnlockExperimentalVMOptions", "-XX:G1NewCollectionHeuristicPercent=20", "-XX:G1ReservePercent=20", "-XX:MaxGCPauseMillis=50", "-XX:InitiatingHeapOccupancyPercent=35", "-jar", "velocity.jar", "nogui"]
